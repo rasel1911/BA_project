@@ -20,7 +20,7 @@ from groq import Groq
 from blog.models import Chat
 
 client = Groq(
-    api_key= "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",
+    api_key=config("api_key"),
 )
 
 @login_required
