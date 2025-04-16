@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management - Seller Center</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color:rgb(36, 245, 53);
+            --secondary-color:rgb(40, 240, 140);
+            --dark-color:rgb(33, 33, 33);
+            --light-color: #f5f5f5;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f7f7;
+        }
+        
+        .sidebar {
+            min-height: calc(100vh - 56px);
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar .nav-link {
+            color: var(--dark-color);
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background-color: rgba(71, 245, 36, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 1rem;
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            min-height: calc(100vh - 56px);
+            background: #343a40;
+            color: white;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .sidebar-brand {
+            padding: 1rem 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-nav {
+            padding: 0;
+            list-style: none;
+        }
+        
+        .sidebar-nav-item {
+            margin: 0;
+        }
+        
+        .sidebar-nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            display: block;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-nav-link:hover, .sidebar-nav-link.active {
+            color: white;
+            background-color: rgba(255,255,255,0.1);
+            border-left-color: var(--primary-color);
+        }
+        
+        .sidebar-nav-link i {
+            width: 20px;
+            margin-right: 10px;
+            text-align: center;
+        }
+        .content {
+            margin-left: 10px;
+            padding: 20px;
+            width: 100%;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .shop-photo, .seller-photo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation (same as before) -->
+    <div>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:rgb(36, 245, 116);">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="https://via.placeholder.com/150x50?text=Seller+Center" alt="Seller Center">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i> Rasel
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-question-circle"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+        <div class="row">
+            <div class="col-md-3 sidebar">
+                <div class="sidebar-brand d-flex align-items-center">
+                    <i class="fas fa-store me-2"></i>
+                    <span>Vendor Dashboard</span>
+                </div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="{% url 'vendorDeshboard' %}" class="sidebar-nav-link ">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link active" >
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Orders</span>
+                            <span class="badge bg-primary float-end">5</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="{% url 'vendorVeriant' %}" class="sidebar-nav-link ">
+                            <i class="fas fa-box-open"></i>
+                            <span>Products</span>
+                            <span class="badge bg-success float-end">{{final_product_v_number}}</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>Customers</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <i class="fas fa-tags"></i>
+                            <span>Discounts</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#" class="sidebar-nav-link">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item mt-3">
+                        <a href="#" class="sidebar-nav-link">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <div class="content">
+                    <div class="dashboard-header">
+                        <img src="{{vendors.image.url}}" alt="Shop Photo" class="shop-photo">
+                        <h2>Rasel shop</h2>
+                        <img src="{{user_vendor.profile_image.url}}" alt="Seller Photo" class="seller-photo">
+                    </div>
+                <p><strong>Shop Address:</strong> 123 Market Street, City, Country rasel</p>
+                </div>
+
+                <div class="card card-dashboard">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">
+                                            <input type="checkbox" class="form-check-input">
+                                        </th>
+                                        <th>customar name</th>
+                                        <th>email</th>
+                                        <th>Price</th>
+                                        <th>status</th>
+                                        <th>Address</th>
+                                        <th>division</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    {%for i in order_item%}
+                                    <tr>
+                                        <th style="width: 50px;">
+                                            <input type="checkbox" class="form-check-input">
+                                        </th>
+                                        <th>{{i.customar_id.username}}</th>
+                                        <th>{{i.customar_id.email}}</th>
+                                        <th>{{i.order_id.total_price}}</th>
+                                        <th>{{i.order_id.status}}</th>
+                                        <th>jamalpur</th>
+                                        <th>jamalpur</th>
+                                        <th>{%if i.price > 0 %}
+                                            <span style="color: green;">In stock</span>
+                                            {% else %}
+                                            <span style="color: red;">Out of stock</span>
+                                            {% endif %}
+                                        </th>
+                                        
+                                    </tr>
+                                    {%endfor%}
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-muted">Showing 1 to 5 of 25 products</span>
+                            </div>
+                            <div>
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination pagination-sm mb-0">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Management Content -->
+           
+            
+        </div>
+</div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+</body>
+</html>

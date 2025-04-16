@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #343a40;
+            color: white;
+            padding: 15px;
+            position: fixed;
+        }
+        .sidebar a {
+            color: white;
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background: #495057;
+        }
+        .content {
+            margin-left: 260px;
+            padding: 20px;
+            width: 100%;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .shop-photo, .seller-photo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .product-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h4>Vendor Dashboard</h4>
+        <a href="#">Dashboard</a>
+        <a href="#">Orders</a>
+        <a href="#">Products</a>
+        <a href="#">Settings</a>
+        <a href="#">Logout</a>
+    </div>
+    
+    <div class="content">
+        <div class="dashboard-header">
+            <img src="{{vendors.image.url}}" alt="Shop Photo" class="shop-photo">
+            <h2>{{ vendors.shop_name }}</h2>
+            <img src="{{user_vendor.profile_image.url}}" alt="Seller Photo" class="seller-photo">
+        </div>
+        <br>
+        <p>{{user_vendor.phone_no}}</p>
+        <p><strong>Shop Address:</strong> 123 Market Street, City, Country</p>
+        
+        <h3>Manage Products</h3>
+        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addItemModal">Add Product</button>
+        
+        <div class="row" id="product-list"></div>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div class="modal fade" id="addItemModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content"> 
+                <div class="modal-header">
+                    <h5 class="modal-title">Add/Edit Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="edit-index">
+                    <input type="text" id="product-name" class="form-control mb-2" placeholder="Product Name">
+                    <select id="product-type" class="form-control mb-2">
+                        <option value="Electronics">Electronics</option>
+                        <option value="Clothing">Clothing</option>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Home & Kitchen">Home & Kitchen</option>
+                    </select>
+                    <input type="file" id="image-upload" class="form-control mb-2" accept="image/*">
+                    <input type="number" id="product-price" class="form-control mb-2" placeholder="Price">
+                    <button class="btn btn-primary" id="save-product">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let products = [];
+
+        $(document).ready(function() {
+            $('#save-product').click(function() {
+                let index = $('#edit-index').val();
+                let name = $('#product-name').val().trim();
+                let type = $('#product-type').val();
+                let price = parseFloat($('#product-price').val());
+                let file = $('#image-upload')[0].files[0];
+
+                if (name && type && price > 0) {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        let imageUrl = file ? e.target.result : products[index]?.imageUrl;
+                        let product = { name, type, price, imageUrl };
+                        
+                        if (index) {
+                            products[index] = product;
+                            let productElement = $(`[data-index='${index}']`);
+                            productElement.find("img").attr("src", imageUrl);
+                            productElement.find("p:nth-child(2)").text(name);
+                            productElement.find("p:nth-child(3)").text(type);
+                            productElement.find("p:nth-child(4)").text(`$${price.toFixed(2)}`);
+                        } else {
+                            let newIndex = products.length;
+                            products.push(product);
+                            $('#product-list').append(`
+                                <div class='col-md-3 text-center mb-3' data-index='${newIndex}'>
+                                    <img src="${imageUrl}" alt="${name}" class="product-img mb-2">
+                                    <p><strong>${name}</strong></p>
+                                    <p>${type}</p>
+                                    <p>$${price.toFixed(2)}</p>
+                                    <button class='btn btn-warning btn-sm' onclick='editProduct(${newIndex})'>Edit</button>
+                                    <button class='btn btn-danger btn-sm' onclick='deleteProduct(${newIndex})'>Delete</button>
+                                </div>
+                            `);
+                        }
+                        
+                        $('#product-name').val('');
+                        $('#product-price').val('');
+                        $('#image-upload').val('');
+                        $('#edit-index').val('');
+                        $('#addItemModal').modal('hide');
+                    };
+                    if (file) {
+                        reader.readAsDataURL(file);
+                    } else {
+                        reader.onload();
+                    }
+                } else {
+                    alert("Please fill all fields correctly.");
+                }
+            });
+        });
+
+        function editProduct(index) {
+            let product = products[index];
+            $('#edit-index').val(index);
+            $('#product-name').val(product.name);
+            $('#product-type').val(product.type);
+            $('#product-price').val(product.price);
+            $('#addItemModal').modal('show');
+        }
+
+        function deleteProduct(index) {
+            if (confirm("Are you sure you want to delete this product?")) {
+                products.splice(index, 1);
+                $(`[data-index='${index}']`).remove();
+            }
+        }
+    </script>
+</body>
+</html>

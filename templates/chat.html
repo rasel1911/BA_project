@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Messenger Chat UI</title>
+  <style type="text/css">
+  	body {
+		  font-family: 'Segoe UI', sans-serif;
+		  background-color: #f0f5f1;
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  justify-content: center;
+		  margin: 0;
+		}
+
+		.chat-container {
+		  width: 400px;
+		  max-width: 100%;
+		  background: white;
+		  border-radius: 10px;
+		  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+		  display: none;
+		  flex-direction: column;
+		  overflow: hidden;
+		}
+
+		.chat-header {
+		  background: #00ff0d;
+		  color: white;
+		  padding: 15px;
+		  font-size: 18px;
+		  font-weight: bold;
+		}
+
+		.chat-box {
+		  padding: 15px;
+		  height: 400px;
+		  overflow-y: auto;
+		  display: flex;
+		  flex-direction: column;
+		  gap: 10px;
+		  background: #e5ddd5;
+		}
+
+		.message {
+		  max-width: 70%;
+		  padding: 10px 15px;
+		  border-radius: 20px;
+		  font-size: 15px;
+		  line-height: 1.4;
+		}
+
+		.sent {
+		  background: #00ff15;
+		  color: white;
+		  align-self: flex-end;
+		}
+
+		.received {
+		  background: #ffffff;
+		  color: #333;
+		  align-self: flex-start;
+		}
+
+		.chat-input {
+		  display: flex;
+		  padding: 10px;
+		  border-top: 1px solid #ccc;
+		  background: #fff;
+		}
+
+		.chat-input input {
+		  flex: 1;
+		  padding: 10px;
+		  border-radius: 20px;
+		  border: 1px solid #ccc;
+		  outline: none;
+		  margin-right: 10px;
+		}
+
+		.chat-input button {
+		  padding: 10px 15px;
+		  background: #00ff0d;
+		  border: none;
+		  border-radius: 20px;
+		  color: white;
+		  cursor: pointer;
+		  font-weight: bold;
+		}
+        .close-btn {
+            float: right;
+            cursor: pointer;
+            font-size: 18px;
+          }
+  
+          .chat-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0084ff;
+            color: white;
+            font-size: 24px;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 1000;
+          }
+  
+          .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            flex-direction: column;
+          }
+  </style>
+</head>
+<body>
+    <p>helo my name is rasel i create a project that is fantastick</p>
+
+    <div class="chat-toggle" id="chat-toggle" onclick="openChat()">💬</div>
+
+    <div class="chat-container" id="chat-container">
+        <div class="chat-header">
+          SimpleBot
+          <span class="close-btn" onclick="closeChat()">✖</span>
+        </div>
+        <div class="chat-box">
+            {%for c in ch%}
+            <div class="message sent">{{c.send}}</div>
+            <div class="message received">{{c.recive}}</div>
+            {%endfor%}
+        </div>
+        <form action="#" method="post">
+            {% csrf_token %}
+            <div class="chat-input">
+            <input type="text" name="chat_bot" placeholder="Type a message..." />
+            <button>Send</button>
+            </div>
+        </form>
+    </div>
+  <script>
+    function closeChat() {
+        document.getElementById("chat-container").style.display = "none";
+        document.getElementById("chat-toggle").style.display = "flex";
+      }
+  
+      function openChat() {
+        document.getElementById("chat-container").style.display = "flex";
+        document.getElementById("chat-toggle").style.display = "none";
+      }
+  </script>
+
+
+
+
+</body>
+</html>

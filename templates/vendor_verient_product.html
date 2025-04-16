@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management - Seller Center</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #f57224;
+            --secondary-color: #2874f0;
+            --dark-color: #212121;
+            --light-color: #f5f5f5;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f7f7;
+        }
+        
+        .sidebar {
+            min-height: calc(100vh - 56px);
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar .nav-link {
+            color: var(--dark-color);
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background-color: rgba(245, 114, 36, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .card-dashboard {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+        
+        .product-img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .badge-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .status-active {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+        
+        .status-inactive {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+        
+        .btn-primary-custom {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary-custom:hover {
+            background-color: #e0611a;
+            color: white;
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            color: #6c757d;
+        }
+        
+        .search-box input {
+            padding-left: 40px;
+        }
+        
+        .filter-dropdown .dropdown-menu {
+            width: 300px;
+            padding: 15px;
+        }
+        
+        .image-upload-container {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .image-upload-container:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .image-preview {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .tab-content {
+            padding: 20px 0;
+        }
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 0.5rem 1rem;
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            min-height: calc(100vh - 56px);
+            background: #343a40;
+            color: white;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .sidebar-brand {
+            padding: 1rem 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-nav {
+            padding: 0;
+            list-style: none;
+        }
+        
+        .sidebar-nav-item {
+            margin: 0;
+        }
+        
+        .sidebar-nav-link {
+            color: rgba(255,255,255,0.8);
+            display: block;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-nav-link:hover, .sidebar-nav-link.active {
+            color: white;
+            background-color: rgba(255,255,255,0.1);
+            border-left-color: var(--primary-color);
+        }
+        
+        .sidebar-nav-link i {
+            width: 20px;
+            margin-right: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation (same as before) -->
+    <div>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:rgb(36, 245, 116);">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="https://via.placeholder.com/150x50?text=Seller+Center" alt="Seller Center">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i> Rasel
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-question-circle"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+        <div class="row">
+            <div class="col-md-3 sidebar">
+                <div class="sidebar-brand d-flex align-items-center">
+                    <i class="fas fa-store me-2"></i>
+                    <span>Vendor Dashboard</span>
+                </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-nav-item">
+                    <a href="{% url 'vendorDeshboard' %}" class="sidebar-nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="#" class="sidebar-nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Orders</span>
+                        <span class="badge bg-primary float-end">5</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="#" class="sidebar-nav-link active">
+                        <i class="fas fa-box-open"></i>
+                        <span>Products</span>
+                        
+                        <span class="badge bg-success float-end">{{final_product_v_number}}</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="#" class="sidebar-nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="#" class="sidebar-nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>Customers</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="#" class="sidebar-nav-link">
+                        <i class="fas fa-tags"></i>
+                        <span>Discounts</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a href="#" class="sidebar-nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item mt-3">
+                    <a href="#" class="sidebar-nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+            </div>
+
+            <!-- Product Management Content -->
+            <div class="col-md-9 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0">Product Management</h4>
+                    <div>
+                        <button class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                            <i class="fas fa-plus me-1"></i> Add Product
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Filters -->
+                <div class="card card-dashboard mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" class="form-control" placeholder="Search products...">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex">
+                                    <div class="filter-dropdown me-2">
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-filter me-1"></i> Filter
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <h6 class="dropdown-header">Filter Products</h6>
+                                            <div class="mb-3">
+                                                <label class="form-label">Status</label>
+                                                <select class="form-select">
+                                                    <option>All Status</option>
+                                                    <option>Active</option>
+                                                    <option>Inactive</option>
+                                                    <option>Out of Stock</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Category</label>
+                                                <select class="form-select">
+                                                    <option>All Categories</option>
+                                                    <option>Electronics</option>
+                                                    <option>Fashion</option>
+                                                    <option>Home & Living</option>
+                                                    <option>Beauty</option>
+                                                </select>
+                                            </div>
+                                            <button class="btn btn-primary-custom btn-sm w-100">Apply Filters</button>
+                                        </div>
+                                    </div>
+                                    <div class="filter-dropdown">
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-sort me-1"></i> Sort By
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <h6 class="dropdown-header">Sort Options</h6>
+                                            <a class="dropdown-item" href="#">Newest First</a>
+                                            <a class="dropdown-item" href="#">Oldest First</a>
+                                            <a class="dropdown-item" href="#">Price: Low to High</a>
+                                            <a class="dropdown-item" href="#">Price: High to Low</a>
+                                            <a class="dropdown-item" href="#">Most Popular</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Table -->
+                <div class="card card-dashboard">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">
+                                            <input type="checkbox" class="form-check-input">
+                                        </th>
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th>Stock</th>
+                                        <th>Category</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    {%for i in final_product_v%}
+                                    <tr>
+                                        <th style="width: 50px;">
+                                            <input type="checkbox" class="form-check-input">
+                                        </th>
+                                        <th>{{i.title_pv}}</th>
+                                        <th>{{i.price}}</th>
+                                        <th>{{i.Total_stock}}</th>
+                                        <th>{{i.catagory_id.name}}</th>
+                                        <th>{%if i.Total_stock > 0 %}
+                                            <span style="color: green;">In stock</span>
+                                            {% else %}
+                                            <span style="color: red;">Out of stock</span>
+                                            {% endif %}
+                                        </th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    {%endfor%}
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-muted">Showing 1 to 5 of 25 products</span>
+                            </div>
+                            <div>
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination pagination-sm mb-0">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="basic-tab" data-bs-toggle="tab" data-bs-target="#basic" type="button">Basic Info</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pricing-tab" data-bs-toggle="tab" data-bs-target="#pricing" type="button">Pricing</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="inventory-tab" data-bs-toggle="tab" data-bs-target="#inventory" type="button">Inventory</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="shipping-tab" data-bs-toggle="tab" data-bs-target="#shipping" type="button">Shipping</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="productTabsContent">
+                        
+                        <div class="tab-pane fade show active" id="basic" role="tabpanel">
+                            <div class="mb-3">
+                                <label class="form-label">Product Name</label>
+                                <input type="text" name ="product_name" class="form-control" placeholder="Enter product name">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" name="product_des" rows="3" placeholder="Enter product description"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Category</label>
+                                <select class="form-select" name="product_catagory">
+                                    <option selected disabled>Select category</option>
+                                    {%for catagory in vp_catagory%}
+                                    <option>{{catagory.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Product Images</label>
+                                <div class="image-upload-container">
+                                    <i class="fas fa-cloud-upload-alt fa-3x mb-3" style="color: #6c757d;"></i>
+                                    <h5>Drag & Drop Images Here</h5>
+                                    <p class="text-muted">or click to browse files</p>
+                                    <input type="file" class="d-none" name="product_image" id="productImages" multiple>
+                                </div>
+                                <div class="d-flex flex-wrap mt-3" id="imagePreviews"></div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pricing" role="tabpanel">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Price ($)</label>
+                                    <input type="number" name="product_price" class="form-control" placeholder="0.00">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Size </label>
+                                    <select class="form-select" name = "product_size">
+                                        <option selected disabled>Select category</option>
+                                        {%for size in vp_size%}
+                                        <option>{{size.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Color</label>
+                                <select class="form-select" name="product_color">
+                                    <option selected disabled>Select category</option>
+                                    {%for color in vp_color%}
+                                    <option>{{color.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="inventory" role="tabpanel">
+                            <div class="mb-3">
+                                <label class="form-label">SKU (Stock Keeping Unit)</label>
+                                <input type="text" name="product_sku" class="form-control" placeholder="e.g. PROD-001">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Barcode (ISBN, UPC, GTIN, etc.)</label>
+                                <input type="text" name="product_barcode" class="form-control" placeholder="Enter barcode number">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Quantity</label>
+                                <input type="number" name="product_quantity" class="form-control" placeholder="0">
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="trackQuantity">
+                                <label class="form-check-label" for="trackQuantity">
+                                    Track quantity
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="continueSelling">
+                                <label class="form-check-label" for="continueSelling">
+                                    Continue selling when out of stock
+                                </label>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="shipping" role="tabpanel">
+                            <div class="mb-3">
+                                <label class="form-label">Weight (kg)</label>
+                                <input type="number" name="weight" class="form-control" placeholder="0.0">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Customs Information</label>
+                                <textarea class="form-control" rows="3" placeholder="Enter customs description"></textarea>
+                                <small class="text-muted">Additional information for customs clearance</small>
+                            </div>
+                            </div>
+                    
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary-custom" id="saveProduct">Save Product</button>
+                    
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+
+    <script>
+        // Image upload preview
+        document.getElementById('productImages').addEventListener('change', function(e) {
+            const previewContainer = document.getElementById('imagePreviews');
+            previewContainer.innerHTML = '';
+            const files = e.target.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.type.match('image.*')) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'image-preview';
+                        previewContainer.appendChild(img);
+                    }
+                    
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+        // Trigger file input when clicking upload container
+        document.querySelector('.image-upload-container').addEventListener('click', function() {
+            document.getElementById('productImages').click();
+        });
+        
+        // Drag and drop for images
+        const uploadContainer = document.querySelector('.image-upload-container');
+        
+        uploadContainer.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#f57224';
+            this.style.backgroundColor = 'rgba(245, 114, 36, 0.1)';
+        });
+        
+        uploadContainer.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#ddd';
+            this.style.backgroundColor = 'transparent';
+        });
+        
+        uploadContainer.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#ddd';
+            this.style.backgroundColor = 'transparent';
+            
+            const files = e.dataTransfer.files;
+            document.getElementById('productImages').files = files;
+            
+            // Trigger change event manually
+            const event = new Event('change');
+            document.getElementById('productImages').dispatchEvent(event);
+        });
+    </script>
+</body>
+</html>
